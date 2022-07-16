@@ -2,6 +2,7 @@ import { useState } from "react";
 import Chessboard from "chessboardjsx";
 import { Chess, ChessInstance, ShortMove } from "chess.js";
 import { randommove, loser } from "./player";
+import { GridLoader } from "react-spinners";
 
 function App() {
   const [chess] = useState<ChessInstance>(
@@ -10,12 +11,16 @@ function App() {
 
   const [fen, setFen] = useState(chess.fen());
 
+  let [loading, setLoading] = useState(true);
+
   const handleMove = (move: ShortMove) => {
     if (chess.move(move)) {
       setFen(chess.fen());
+      setLoading(true);
       setTimeout(() => {
         // const move = randommove(chess);
         const move = loser(chess.fen());
+        setLoading(false);
         chess.move(move);
         setFen(chess.fen());
       }, 300);
@@ -23,10 +28,10 @@ function App() {
   };
 
   return (
-    <div style={{ margin: "auto" }}>
+    <div style={{ margin: "auto", display: "flex", flexDirection: "column" }}>
       <h1 style={{ textAlign: "center", color: "lightgray" }}>Bad at Chess</h1>
       <Chessboard
-        width={400}
+        width={700}
         position={fen}
         onDrop={(move) =>
           handleMove({
@@ -36,6 +41,7 @@ function App() {
           })
         }
       />
+      <GridLoader color="#00ff11" loading={loading} style={{ margin: "auto", paddingTop: 16 }} />
     </div>
   );
 }
