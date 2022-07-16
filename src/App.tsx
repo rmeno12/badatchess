@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { useState } from "react";
 import Chessboard from "chessboardjsx";
 import { Chess, ChessInstance, ShortMove } from "chess.js";
+import { randommove, loser } from "./player";
 
 function App() {
   const [chess] = useState<ChessInstance>(
@@ -13,23 +12,19 @@ function App() {
 
   const handleMove = (move: ShortMove) => {
     if (chess.move(move)) {
-      setTimeout(() => {
-        const moves = chess.moves();
-
-        if (moves.length > 0) {
-          const computerMove = moves[Math.floor(Math.random() * moves.length)];
-          chess.move(computerMove);
-          setFen(chess.fen());
-        }
-      }, 300);
-
       setFen(chess.fen());
+      setTimeout(() => {
+        // const move = randommove(chess);
+        const move = loser(chess.fen());
+        chess.move(move);
+        setFen(chess.fen());
+      }, 300);
     }
   };
 
   return (
-    <div className="flex-center">
-      <h1>Chessboard</h1>
+    <div style={{ margin: "auto" }}>
+      <h1 style={{ textAlign: "center", color: "lightgray" }}>Bad at Chess</h1>
       <Chessboard
         width={400}
         position={fen}
