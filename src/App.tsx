@@ -11,7 +11,7 @@ function App() {
 
   const [fen, setFen] = useState(chess.fen());
 
-  let [loading, setLoading] = useState(true);
+  let [loading, setLoading] = useState(false);
 
   const handleMove = (move: ShortMove) => {
     if (chess.move(move)) {
