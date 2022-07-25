@@ -19,9 +19,14 @@ function App() {
       setLoading(true);
       setTimeout(() => {
         // const move = randommove(chess);
+        let a = performance.now();
         const move = loser(chess.fen());
+        console.log(`took ${(performance.now() - a) / 1000} seconds to think of a move`);
         setLoading(false);
-        chess.move(move);
+        if (move)
+          chess.move(move);
+        else
+          console.log('no moves...');
         setFen(chess.fen());
       }, 300);
     }
